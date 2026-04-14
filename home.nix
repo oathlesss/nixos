@@ -1,0 +1,187 @@
+{ config, pkgs, lib, inputs, ... }:
+{
+  imports = [
+    ./modules/apps.nix
+    ./modules/noctalia.nix
+    ./modules/shell.nix
+  ];
+
+  home.username = "ruben";
+  home.homeDirectory = "/home/ruben";
+  home.stateVersion = "25.05";
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    withRuby = false;
+    withPython3 = false;
+  };
+
+  home.packages =
+    let fontDir = /home/ruben/nixos/fonts/berkeley-mono-nerd;
+    in if builtins.pathExists fontDir
+    then [
+      (pkgs.runCommandLocal "berkeley-mono-nerd-font" {} ''
+        mkdir -p $out/share/fonts/truetype
+        cp ${fontDir}/*.ttf $out/share/fonts/truetype/
+      '')
+    ]
+    else lib.warn "BerkeleyMono Nerd Font not found at ${toString fontDir} — skipping font install. Patch and copy TTFs there to enable it." [];
+
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox-devedition;
+  };
+
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      general.import = [ "~/.config/alacritty/themes/noctalia.toml" ];
+      window = {
+        padding = { x = 10; y = 10; };
+        decorations = "None";
+      };
+      font = {
+        size = 13;
+        normal = { family = "BerkeleyMono Nerd Font"; style = "Regular"; };
+        bold = { family = "BerkeleyMono Nerd Font"; style = "Bold"; };
+        italic = { family = "BerkeleyMono Nerd Font"; style = "Oblique"; };
+        bold_italic = { family = "BerkeleyMono Nerd Font"; style = "Bold Oblique"; };
+      };
+    };
+  };
+
+  programs.foot = {
+    enable = true;
+    settings = {
+      main = {
+        font = "BerkeleyMono Nerd Font:size=13";
+      };
+      colors = {
+        background = "1e1e2e";
+        foreground = "cdd6f4";
+        regular0 = "45475a";
+        regular1 = "f38ba8";
+        regular2 = "a6e3a1";
+        regular3 = "f9e2af";
+        regular4 = "89b4fa";
+        regular5 = "f5c2e7";
+        regular6 = "94e2d5";
+        regular7 = "a6adc8";
+        bright0 = "585b70";
+        bright1 = "f37799";
+        bright2 = "89d88b";
+        bright3 = "ebd391";
+        bright4 = "74a8fc";
+        bright5 = "f2aede";
+        bright6 = "6bd7ca";
+        bright7 = "bac2de";
+      };
+      cursor = {
+        color = "1e1e2e f5e0dc";
+      };
+    };
+  };
+
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    matchBlocks."*".extraOptions.IdentityAgent = "~/.1password/agent.sock";
+  };
+
+  programs.git = {
+    enable = true;
+    signing = {
+      key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZuQHRq2R8+AwS2vlglQjyCfkBRfZ/iNFs9WHoTE9ii";
+      format = "ssh";
+      signByDefault = true;
+    };
+    ignores = [ "**/.claude/settings.local.json" ];
+    includes = [{ condition = "gitdir:~/work/"; path = "~/.config/git/work"; }];
+    settings = {
+      user = {
+        name = "Ruben Hesselink";
+        email = "rubenhesselink@outlook.com";
+      };
+      gpg.ssh.program = "/run/current-system/sw/bin/op-ssh-sign";
+      commit.template = "~/.config/git/template";
+      core = {
+        autocrlf = "input";
+        compression = 9;
+        fsync = "none";
+        whitespace = "error";
+      };
+      advice = {
+        addEmptyPathspec = false;
+        pushNonFastForward = false;
+        statusHints = false;
+      };
+      blame = {
+        coloring = "highlightRecent";
+        date = "relative";
+      };
+      diff = {
+        context = 3;
+        renames = "copies";
+        interHunkContext = 10;
+      };
+      difftool.prompt = false;
+      init.defaultBranch = "main";
+      log = {
+        abbrevCommit = true;
+        graphColors = "blue,yellow,cyan,magenta,green,red";
+      };
+      status = {
+        branch = true;
+        short = true;
+        showStash = true;
+        showUntrackedFiles = "all";
+      };
+      pager.branch = false;
+      push = {
+        autoSetupRemote = true;
+        default = "current";
+        followTags = true;
+      };
+      pull.rebase = true;
+      submodule.fetchJobs = 16;
+      rebase.autoStash = true;
+      "color \"blame\"".highlightRecent = "black bold,1 year ago,white,1 month ago,default,7 days ago,blue";
+      "color \"branch\"" = {
+        current = "magenta";
+        local = "default";
+        remote = "yellow";
+        upstream = "green";
+        plain = "blue";
+      };
+      "color \"diff\"" = {
+        meta = "black bold";
+        frag = "magenta";
+        context = "white";
+        whitespace = "yellow reverse";
+      };
+      interactive.singlekey = true;
+      "url \"git@github.com:\"".insteadOf = "gh:";
+    };
+  };
+
+  xdg.desktopEntries.slack-app = {
+    name = "Slack";
+    exec = "slack";
+    icon = "slack";
+    categories = [ "Network" "InstantMessaging" ];
+    comment = "Slack (Firefox app mode)";
+  };
+
+  xdg.configFile."git/template".source = ./config/git/template;
+  xdg.configFile."git/work".source    = ./config/git/work;
+
+  xdg.configFile."nvim/init.lua".source = ./config/nvim/init.lua;
+  xdg.configFile."nvim/lua".source      = ./config/nvim/lua;
+  xdg.configFile."nvim/plugin".source   = ./config/nvim/plugin;
+  xdg.configFile."niri/config.kdl".source   = ./config/niri/config.kdl;
+  xdg.configFile."niri/noctalia.kdl".source = ./config/niri/noctalia.kdl;
+  xdg.configFile."alacritty/themes/noctalia.toml".source = ./config/alacritty/themes/noctalia.toml;
+}
