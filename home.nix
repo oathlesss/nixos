@@ -13,16 +13,21 @@
     packages =
       let
         fontDir = "/home/ruben/nixos/fonts/berkeley-mono-nerd";
-        fontDirPath = builtins.path { path = fontDir; name = "berkeley-mono-nerd"; };
+        canReadHostFs = builtins.pathExists "/";
       in
-      (if builtins.pathExists fontDir
+      (if canReadHostFs && builtins.pathExists fontDir
       then [
-        (pkgs.runCommandLocal "berkeley-mono-nerd-font" {} ''
-          mkdir -p $out/share/fonts/truetype
-          cp ${fontDirPath}/*.ttf $out/share/fonts/truetype/
-        '')
+        (let
+          fontDirPath = builtins.path { path = fontDir; name = "berkeley-mono-nerd"; };
+        in
+          pkgs.runCommandLocal "berkeley-mono-nerd-font" {} ''
+            mkdir -p $out/share/fonts/truetype
+            cp ${fontDirPath}/*.ttf $out/share/fonts/truetype/
+          '')
       ]
-      else lib.warn "BerkeleyMono Nerd Font not found at ${fontDir} — skipping font install. Patch and copy TTFs there to enable it." [])
+      else if canReadHostFs
+      then lib.warn "BerkeleyMono Nerd Font not found at ${fontDir} — skipping font install. Patch and copy TTFs there to enable it." []
+      else [])
       ++ [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
       ];
