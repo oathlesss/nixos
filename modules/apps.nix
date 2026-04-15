@@ -133,6 +133,17 @@
       done
     '')
 
+    # Web development
+    gh        # GitHub CLI
+    xh        # HTTP client
+    mkcert    # local HTTPS certificates
+    act       # run GitHub Actions locally
+    tokei     # count lines of code by language
+
+    # Game development
+    aseprite  # pixel art editor
+    blender   # 3D modeling
+
     # System utilities
     fastfetch
     godot

@@ -24,7 +24,7 @@
       ]
       else lib.warn "BerkeleyMono Nerd Font not found at ${fontDir} — skipping font install. Patch and copy TTFs there to enable it." [])
       ++ [
-        inputs.home-manager.packages.${pkgs.system}.home-manager
+        inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
       ];
     sessionVariables = {
       XDG_CURRENT_DESKTOP = "niri";
