@@ -13,7 +13,6 @@
     obs-studio
     slurp
     swayidle
-    swaylock
     wev
     widevine-cdm
     wl-clipboard

@@ -4,6 +4,7 @@
     ./modules/apps.nix
     ./modules/noctalia.nix
     ./modules/shell.nix
+    ./modules/swaylock.nix
   ];
 
   home = {
