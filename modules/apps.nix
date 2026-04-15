@@ -1,6 +1,10 @@
 { pkgs, inputs, ... }:
 {
   home.packages = with pkgs; [
+    (blender.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ sse2neon ];
+    }))
+
     # Browsers
     brave
 
@@ -152,7 +156,6 @@
 
     # Game development
     aseprite  # pixel art editor
-    blender   # 3D modeling
     krita     # digital painting for game assets
 
     # CLI essentials

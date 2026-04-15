@@ -28,6 +28,10 @@
       };
       shellInit = ''
         alias kubectl="kubecolor"
+        alias ls="eza"
+        alias ll="eza -l"
+        alias la="eza -la"
+        alias lt="eza --tree"
       '';
       plugins = with pkgs.fishPlugins; [
         { name = "fzf-fish"; inherit (fzf-fish) src; }
