@@ -58,6 +58,7 @@
 
   # Shell
   programs.fish.enable = true;
+  programs.nix-ld.enable = true;
 
   # User
   users.users.ruben = {
@@ -69,10 +70,11 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.sessionVariables = {
-    GNOME_KEYRING_CONTROL = "/run/user/$UID/keyring";
-    SSH_AUTH_SOCK         = "/run/user/$UID/keyring/ssh";
-    XDG_CURRENT_DESKTOP   = "niri";
-    NIXOS_OZONE_WL        = "1";  # enables Wayland mode in slacky/Electron apps
+    GNOME_KEYRING_CONTROL  = "/run/user/$UID/keyring";
+    SSH_AUTH_SOCK          = "/run/user/$UID/keyring/ssh";
+    XDG_CURRENT_DESKTOP    = "niri";
+    NIXOS_OZONE_WL         = "1";  # enables Wayland mode in slacky/Electron apps
+    UV_PYTHON_DOWNLOADS    = "never";  # use nix-provided Pythons, not uv-managed ones
   };
   services.dbus.enable = true;
   services.upower.enable = true;

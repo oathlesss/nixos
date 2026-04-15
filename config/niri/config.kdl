@@ -76,7 +76,7 @@ input {
 // https://yalter.github.io/niri/Configuration:-Outputs
 // Remember to uncomment the node by removing "/-"!
 // Built-in MacBook display — logical size 1512x945 (3024x1890 @ scale 2)
-output "Unknown Unknown Unknown" {
+output "eDP-1" {
     mode "3024x1890@120.000"
     scale 2
     transform "normal"
@@ -84,11 +84,11 @@ output "Unknown Unknown Unknown" {
 }
 
 // LG HDR 4K via DisplayLink dock — logical size 2560x1440 (3840x2160 @ scale 1.5)
-// No explicit position: niri auto-places this to the right of the built-in
-output "LG Electronics LG HDR 4K 0x00030D9C" {
+output "LG Electronics LG HDR 4K 0x00002AC2" {
     mode "3840x2160@60.000"
     scale 1.5
     transform "normal"
+    position x=1512 y=0
 }
 
 // Settings that influence how windows are positioned and sized.

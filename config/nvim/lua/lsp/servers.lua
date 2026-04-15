@@ -1,5 +1,7 @@
 return {
   lua_ls = {
+    cmd      = { "lua-language-server" },
+    filetypes = { "lua" },
     settings = {
       Lua = {
         runtime   = { version = "LuaJIT" },
@@ -30,6 +32,7 @@ return {
   },
 
   ruff = {
+    cmd = { "ruff", "server" },
     on_attach = function(client)
       -- Ruff handles linting/formatting only; defer hover to the Python LSP.
       client.server_capabilities.hoverProvider = false

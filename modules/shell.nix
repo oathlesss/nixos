@@ -7,11 +7,11 @@
 
       if status is-interactive
         and not set -q TMUX
-        fastfetch
         exec tmux new-session -A -s main
       end
 
       bind \cf 'tmux neww tmux-sessionizer'
+      fastfetch
 
       fnm env --use-on-cd --shell fish | source
       set -gx NH_FLAKE /home/ruben/nixos
@@ -22,6 +22,15 @@
       rebuild = "nh os switch --hostname asahi -- --impure";
     };
   };
+
+  programs.fish.plugins = with pkgs.fishPlugins; [
+    { name = "fzf-fish"; src = fzf-fish.src; }
+    { name = "autopair"; src = autopair.src; }
+    { name = "done"; src = done.src; }
+    { name = "sponge"; src = sponge.src; }
+    { name = "bass"; src = bass.src; }
+    { name = "colored-man-pages"; src = colored-man-pages.src; }
+  ];
 
   programs.zoxide = {
     enable = true;

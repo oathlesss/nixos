@@ -30,6 +30,8 @@
     ]
     else lib.warn "BerkeleyMono Nerd Font not found at ${toString fontDir} — skipping font install. Patch and copy TTFs there to enable it." [];
 
+  programs.fzf.enable = true;
+
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-devedition;
@@ -93,6 +95,22 @@
 
   programs.git = {
     enable = true;
+    aliases = {
+      lg    = "log --oneline --graph --decorate";
+      lga   = "log --oneline --graph --decorate --all";
+      st    = "status";
+      d     = "diff";
+      ds    = "diff --staged";
+      br    = "branch";
+      co    = "checkout";
+      sw    = "switch";
+      undo  = "reset HEAD~1 --mixed";
+      sl    = "stash list";
+      sp    = "stash pop";
+      amend = "commit --amend --no-edit";
+      pushf = "push --force-with-lease";
+      who   = "shortlog -sn --no-merges";
+    };
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZuQHRq2R8+AwS2vlglQjyCfkBRfZ/iNFs9WHoTE9ii";
       format = "ssh";
