@@ -20,8 +20,14 @@
       lzg     = "lazygit";
       lzd     = "lazydocker";
       rebuild = "nh os switch --hostname asahi -- --impure";
-      hrebuild = "home-manager switch -b backup --flake /home/ruben/nixos#ruben";
+      hrebuild = "home-manager switch -b backup --impure --flake /home/ruben/nixos#ruben";
+      k       = "kubectl";
+      kctx    = "kubectx";
+      kns     = "kubens";
     };
+    shellInit = ''
+      alias kubectl="kubecolor"
+    '';
   };
 
   programs.fish.plugins = with pkgs.fishPlugins; [
@@ -32,6 +38,11 @@
     { name = "bass"; src = bass.src; }
     { name = "colored-man-pages"; src = colored-man-pages.src; }
   ];
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   programs.zoxide = {
     enable = true;

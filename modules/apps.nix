@@ -1,65 +1,123 @@
 { pkgs, inputs, ... }:
 {
   home.packages = with pkgs; [
+    # Browsers
     brave
-    obsidian
-    xwayland-satellite
+
+    # Desktop / Wayland
     grim
+    nautilus
+    obs-studio
     slurp
+    swayidle
+    swaylock
+    wev
+    widevine-cdm
     wl-clipboard
+    xwayland-satellite
     inputs.noctalia.packages.aarch64-linux.default
-    libsecret
-    claude-code
-    opencode
-    codex
+
+    # Media
+    playerctl
     viu
-    bash-language-server
-    vscode-langservers-extracted
-    docker-language-server
-    emmet-language-server
+
+    # Notes / productivity
+    obsidian
+
+    # AI / code assistants
+    claude-code
+    codex
+    opencode
+
+    # Editors / IDEs
+    zed
+
+    # File managers
+    yazi
+
+    # Terminal multiplexers
+    zellij
+
+    # Version control
+    jujutsu
+    lazygit
+
+    # TUI dashboards
+    lazydocker
+    lazyjournal
+    lazysql
+    lazyssh
+
+    # Build tools
+    gnumake
+    just
+
+    # Languages & runtimes
+    fnm
+    go
     lua
-    lua-language-server
+    rustup
+    zig
     (pkgs.writeShellScriptBin "python3" ''exec ${pkgs.python3}/bin/python3 "$@"'')
     (pkgs.writeShellScriptBin "python3.11" ''exec ${pkgs.python311}/bin/python3.11 "$@"'')
     (pkgs.writeShellScriptBin "python3.12" ''exec ${pkgs.python312}/bin/python3.12 "$@"'')
     (pkgs.writeShellScriptBin "python3.13" ''exec ${pkgs.python313}/bin/python3.13 "$@"'')
     (pkgs.writeShellScriptBin "python3.14" ''exec ${pkgs.python314}/bin/python3.14 "$@"'')
+
+    # Python tooling
+    pyrefly
     ruff
+    uv
+    zuban
     (ty.overrideAttrs (old: {
       env = (old.env or {}) // { JEMALLOC_SYS_WITH_LG_PAGE = "14"; };
     }))
-    pyrefly
-    zuban
-    uv
+
+    # Language servers
+    bash-language-server
+    docker-language-server
+    emmet-language-server
+    lua-language-server
+    marksman
     taplo
+    vscode-langservers-extracted
     vtsls
     yaml-language-server
-    fnm
-    rustup
-    go
-    godot
-    zellij
-    zed
-    zig
-    fastfetch
-    jujutsu
-    lazyssh
-    lazygit
-    lazydocker
-    lazysql
-    lazyjournal
-    gnumake
-    just
-    swaylock
-    obs-studio
-    yazi
-    nautilus
-    playerctl
-    wev
-    swayidle
-    marksman
-    nix-output-monitor
+
+    # CLI essentials
+    bat        # cat with syntax highlighting
+    delta      # git diff pager
+    dust       # intuitive du replacement
+    duf        # pretty df replacement
+    fd         # fast find replacement
+    jq         # JSON processor
+    navi       # interactive cheatsheet
+    procs      # ps replacement
+    ripgrep    # fast grep
+    tealdeer   # fast tldr pages
+    tree-sitter # tree-sitter CLI
+    yq         # jq for YAML/TOML/XML
+
+    # System monitoring
+    bottom     # htop with graphs
+
+    # Kubernetes
+    kubectl
+    k9s
+    kubectx    # includes kubens
+    helm
+    kustomize
+    kind       # local clusters in Docker
+    stern      # multi-pod log tailing
+    kubecolor  # colorized kubectl output
+
+    # Nix tooling
+    deadnix
     nh
+    nix-output-monitor
+    statix
+
+    # Database
     postgresql
     postgresql.dev
     (pkgs.writeShellScriptBin "pg_config" ''
@@ -74,6 +132,10 @@
         echo "$value"
       done
     '')
-    widevine-cdm
+
+    # System utilities
+    fastfetch
+    godot
+    libsecret
   ];
 }

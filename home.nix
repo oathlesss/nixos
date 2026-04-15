@@ -21,16 +21,17 @@
   };
 
   home.packages =
-    let fontDir = /home/ruben/nixos/fonts/berkeley-mono-nerd;
+    let fontDir = "/home/ruben/nixos/fonts/berkeley-mono-nerd";
+        fontDirPath = builtins.path { path = fontDir; name = "berkeley-mono-nerd"; };
     in
     (if builtins.pathExists fontDir
     then [
       (pkgs.runCommandLocal "berkeley-mono-nerd-font" {} ''
         mkdir -p $out/share/fonts/truetype
-        cp ${fontDir}/*.ttf $out/share/fonts/truetype/
+        cp ${fontDirPath}/*.ttf $out/share/fonts/truetype/
       '')
     ]
-    else lib.warn "BerkeleyMono Nerd Font not found at ${toString fontDir} — skipping font install. Patch and copy TTFs there to enable it." [])
+    else lib.warn "BerkeleyMono Nerd Font not found at ${fontDir} — skipping font install. Patch and copy TTFs there to enable it." [])
     ++ [
       inputs.home-manager.packages.${pkgs.system}.home-manager
     ];
@@ -162,6 +163,13 @@
         showStash = true;
         showUntrackedFiles = "all";
       };
+      core.pager = "delta";
+      interactive.diffFilter = "delta --color-only";
+      delta = {
+        navigate = true;
+        side-by-side = true;
+        line-numbers = true;
+      };
       pager.branch = false;
       push = {
         autoSetupRemote = true;
@@ -194,6 +202,7 @@
     XDG_CURRENT_DESKTOP = "niri";
     NIXOS_OZONE_WL = "1";
     UV_PYTHON_DOWNLOADS = "never";
+    MANPAGER = "sh -c 'col -bx | bat -l man -p'";
   };
 
   xdg.desktopEntries.slack-app = {
