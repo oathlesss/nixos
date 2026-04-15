@@ -9,6 +9,7 @@
   home.username = "ruben";
   home.homeDirectory = "/home/ruben";
   home.stateVersion = "25.05";
+  programs.home-manager.enable = true;
 
   programs.neovim = {
     enable = true;
@@ -21,14 +22,18 @@
 
   home.packages =
     let fontDir = /home/ruben/nixos/fonts/berkeley-mono-nerd;
-    in if builtins.pathExists fontDir
+    in
+    (if builtins.pathExists fontDir
     then [
       (pkgs.runCommandLocal "berkeley-mono-nerd-font" {} ''
         mkdir -p $out/share/fonts/truetype
         cp ${fontDir}/*.ttf $out/share/fonts/truetype/
       '')
     ]
-    else lib.warn "BerkeleyMono Nerd Font not found at ${toString fontDir} — skipping font install. Patch and copy TTFs there to enable it." [];
+    else lib.warn "BerkeleyMono Nerd Font not found at ${toString fontDir} — skipping font install. Patch and copy TTFs there to enable it." [])
+    ++ [
+      inputs.home-manager.packages.${pkgs.system}.home-manager
+    ];
 
   programs.fzf.enable = true;
 
@@ -95,22 +100,6 @@
 
   programs.git = {
     enable = true;
-    aliases = {
-      lg    = "log --oneline --graph --decorate";
-      lga   = "log --oneline --graph --decorate --all";
-      st    = "status";
-      d     = "diff";
-      ds    = "diff --staged";
-      br    = "branch";
-      co    = "checkout";
-      sw    = "switch";
-      undo  = "reset HEAD~1 --mixed";
-      sl    = "stash list";
-      sp    = "stash pop";
-      amend = "commit --amend --no-edit";
-      pushf = "push --force-with-lease";
-      who   = "shortlog -sn --no-merges";
-    };
     signing = {
       key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBZuQHRq2R8+AwS2vlglQjyCfkBRfZ/iNFs9WHoTE9ii";
       format = "ssh";
@@ -122,6 +111,22 @@
       user = {
         name = "Ruben Hesselink";
         email = "rubenhesselink@outlook.com";
+      };
+      alias = {
+        lg    = "log --oneline --graph --decorate";
+        lga   = "log --oneline --graph --decorate --all";
+        st    = "status";
+        d     = "diff";
+        ds    = "diff --staged";
+        br    = "branch";
+        co    = "checkout";
+        sw    = "switch";
+        undo  = "reset HEAD~1 --mixed";
+        sl    = "stash list";
+        sp    = "stash pop";
+        amend = "commit --amend --no-edit";
+        pushf = "push --force-with-lease";
+        who   = "shortlog -sn --no-merges";
       };
       gpg.ssh.program = "/run/current-system/sw/bin/op-ssh-sign";
       commit.template = "~/.config/git/template";
@@ -185,6 +190,12 @@
     };
   };
 
+  home.sessionVariables = {
+    XDG_CURRENT_DESKTOP = "niri";
+    NIXOS_OZONE_WL = "1";
+    UV_PYTHON_DOWNLOADS = "never";
+  };
+
   xdg.desktopEntries.slack-app = {
     name = "Slack";
     exec = "slack";
@@ -193,13 +204,16 @@
     comment = "Slack (Firefox app mode)";
   };
 
-  xdg.configFile."git/template".source = ./config/git/template;
-  xdg.configFile."git/work".source    = ./config/git/work;
-
-  xdg.configFile."nvim/init.lua".source = ./config/nvim/init.lua;
-  xdg.configFile."nvim/lua".source      = ./config/nvim/lua;
-  xdg.configFile."nvim/plugin".source   = ./config/nvim/plugin;
-  xdg.configFile."niri/config.kdl".source   = ./config/niri/config.kdl;
-  xdg.configFile."niri/noctalia.kdl".source = ./config/niri/noctalia.kdl;
-  xdg.configFile."alacritty/themes/noctalia.toml".source = ./config/alacritty/themes/noctalia.toml;
+  xdg.configFile."git/template".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/git/template";
+  xdg.configFile."git/work".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/git/work";
+  xdg.configFile."nvim".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/nvim";
+  xdg.configFile."niri/config.kdl".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/niri/config.kdl";
+  xdg.configFile."niri/noctalia.kdl".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/niri/noctalia.kdl";
+  xdg.configFile."alacritty/themes/noctalia.toml".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/alacritty/themes/noctalia.toml";
 }

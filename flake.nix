@@ -37,16 +37,17 @@
       modules = [
         apple-silicon.nixosModules.apple-silicon-support
         niri.nixosModules.niri
-        home-manager.nixosModules.home-manager
         ./configuration.nix
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-          home-manager.backupFileExtension = "backup";
-          home-manager.users.ruben = import ./home.nix;
-        }
       ];
+    };
+
+    homeConfigurations.ruben = home-manager.lib.homeManagerConfiguration {
+      pkgs = import nixpkgs {
+        system = "aarch64-linux";
+        config.allowUnfree = true;
+      };
+      extraSpecialArgs = { inherit inputs; };
+      modules = [ ./home.nix ];
     };
   };
 }

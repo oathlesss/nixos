@@ -20,6 +20,7 @@
       lzg     = "lazygit";
       lzd     = "lazydocker";
       rebuild = "nh os switch --hostname asahi -- --impure";
+      hrebuild = "home-manager switch -b backup --flake /home/ruben/nixos#ruben";
     };
   };
 

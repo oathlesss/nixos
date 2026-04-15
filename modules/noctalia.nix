@@ -1,12 +1,9 @@
-{ lib, ... }:
-let
-  noctaliaConfigDir = "/home/ruben/nixos/config/noctalia";
-in
+{ config, ... }:
 {
-  home.activation.deployNoctaliaConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/noctalia"
-    ln -sf ${noctaliaConfigDir}/settings.json "$HOME/.config/noctalia/settings.json"
-    ln -sf ${noctaliaConfigDir}/colors.json   "$HOME/.config/noctalia/colors.json"
-    ln -sf ${noctaliaConfigDir}/plugins.json  "$HOME/.config/noctalia/plugins.json"
-  '';
+  xdg.configFile."noctalia/settings.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/noctalia/settings.json";
+  xdg.configFile."noctalia/colors.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/noctalia/colors.json";
+  xdg.configFile."noctalia/plugins.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/noctalia/plugins.json";
 }
