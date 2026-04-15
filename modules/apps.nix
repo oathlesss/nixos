@@ -139,10 +139,24 @@
     mkcert    # local HTTPS certificates
     act       # run GitHub Actions locally
     tokei     # count lines of code by language
+    bruno     # open-source API client (Postman alternative)
+
+    # Containers / DevOps
+    dive      # explore Docker image layers
+    trivy     # vulnerability scanner for containers
+
+    # Media processing
+    audacity  # audio editing
+    ffmpeg    # video/audio conversion and processing
+    imagemagick # batch image manipulation
 
     # Game development
     aseprite  # pixel art editor
     blender   # 3D modeling
+    krita     # digital painting for game assets
+
+    # CLI essentials
+    eza       # modern ls with git status and icons
 
     # System utilities
     fastfetch

@@ -13,9 +13,15 @@
     packages =
       let
         fontDir = "/home/ruben/nixos/fonts/berkeley-mono-nerd";
-        canReadHostFs = builtins.pathExists "/";
+        parentDir = builtins.dirOf fontDir;
+        canInspectParent = (builtins.tryEval (builtins.readDir parentDir)).success;
+        fontDirExists = canInspectParent && builtins.pathExists fontDir;
+        hasTtf =
+          if fontDirExists
+          then builtins.any (name: lib.hasSuffix ".ttf" name) (builtins.attrNames (builtins.readDir fontDir))
+          else false;
       in
-      (if canReadHostFs && builtins.pathExists fontDir
+      (if hasTtf
       then [
         (let
           fontDirPath = builtins.path { path = fontDir; name = "berkeley-mono-nerd"; };
@@ -25,7 +31,7 @@
             cp ${fontDirPath}/*.ttf $out/share/fonts/truetype/
           '')
       ]
-      else if canReadHostFs
+      else if canInspectParent
       then lib.warn "BerkeleyMono Nerd Font not found at ${fontDir} — skipping font install. Patch and copy TTFs there to enable it." []
       else [])
       ++ [
