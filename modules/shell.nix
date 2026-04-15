@@ -28,10 +28,12 @@
       };
       shellInit = ''
         alias kubectl="kubecolor"
-        alias ls="eza"
-        alias ll="eza -l"
-        alias la="eza -la"
-        alias lt="eza --tree"
+        alias cat="bat"
+        alias find="fd"
+        alias ls="eza --icons"
+        alias ll="eza -l --icons --git"
+        alias la="eza -la --icons --git"
+        alias lt="eza --tree --icons"
       '';
       plugins = with pkgs.fishPlugins; [
         { name = "fzf-fish"; inherit (fzf-fish) src; }
