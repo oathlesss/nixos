@@ -28,7 +28,8 @@
   };
 
   # Suppress kernel log spam on tuigreet TTY
-  boot.kernelParams = [ "console=tty2" ];
+  # loglevel=3: only show severity < 3 (EMERG/ALERT/CRIT); ERR-level Asahi driver errors are silenced
+  boot.kernelParams = [ "console=tty2" "quiet" "loglevel=1" ];
 
   xdg.portal = {
     enable = true;

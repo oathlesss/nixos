@@ -98,5 +98,11 @@
       executable = true;
       text = builtins.readFile ../scripts/slack.fish;
     })
+    (pkgs.writeTextFile {
+      name = "move-slack-to-workspace";
+      destination = "/bin/move-slack-to-workspace";
+      executable = true;
+      text = builtins.readFile ../scripts/move-slack-to-workspace.sh;
+    })
   ];
 }

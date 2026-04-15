@@ -256,7 +256,8 @@ spawn-at-startup "noctalia-shell"
 spawn-at-startup "alacritty"
 spawn-at-startup "firefox-devedition"
 spawn-at-startup "slack"
-spawn-at-startup "1password" "--silent"
+spawn-at-startup "1password"
+spawn-sh-at-startup "move-slack-to-workspace"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -320,12 +321,13 @@ window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    // - Firefox Developer Edition (app-id is "firefox-devedition")
+    match app-id=r#"firefox"# title="^Picture-in-Picture$"
     open-floating true
 }
 
 window-rule {
-    match app-id=r#"firefox$"#
+    match app-id=r#"firefox"#
     open-maximized true
     open-on-workspace "browser"
 }
