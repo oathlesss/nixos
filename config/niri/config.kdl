@@ -253,6 +253,10 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "noctalia-shell"
+spawn-at-startup "alacritty"
+spawn-at-startup "firefox-devedition"
+spawn-at-startup "slack"
+spawn-at-startup "1password" "--silent"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -286,6 +290,11 @@ animations {
     // slowdown 3.0
 }
 
+workspace "terminal"
+workspace "browser"
+workspace "messaging"
+workspace "passwords"
+
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://yalter.github.io/niri/Configuration:-Window-Rules
@@ -300,6 +309,12 @@ window-rule {
     default-column-width {}
 }
 
+window-rule {
+    match app-id="Alacritty"
+    open-maximized true
+    open-on-workspace "terminal"
+}
+
 // Open the Firefox picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
@@ -309,17 +324,22 @@ window-rule {
     open-floating true
 }
 
-// Example: block out two password managers from screen capture.
-// (This example rule is commented out with a "/-" in front.)
+window-rule {
+    match app-id=r#"firefox$"#
+    open-maximized true
+    open-on-workspace "browser"
+}
+
 window-rule {
     match app-id=r#"^1Password$"#
     block-out-from "screen-capture"
-    open-floating true
+    open-on-workspace "passwords"
 }
 
 window-rule {
     match app-id=r#"^SlackApp$"#
     open-maximized true
+    open-on-workspace "messaging"
 }
 
 window-rule {
