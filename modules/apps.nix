@@ -7,6 +7,13 @@
 
     # Browsers
     brave
+    firefox
+    (pkgs.writeShellScriptBin "firefox-drm" ''
+      PROFILE="$HOME/.mozilla/firefox/drm-release"
+      GMP_PATH="$PROFILE/gmp-widevinecdm/system-installed"
+      mkdir -p "$PROFILE"
+      exec env MOZ_GMP_PATH="$GMP_PATH" ${pkgs.firefox}/bin/firefox --no-remote --profile "$PROFILE" "$@"
+    '')
 
     # Desktop / Wayland
     grim

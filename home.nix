@@ -45,6 +45,15 @@
     };
   };
 
+  gtk = {
+    enable = true;
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+    gtk4.theme = null;
+  };
+
   programs = {
     home-manager.enable = true;
 
@@ -55,6 +64,7 @@
       vimAlias = true;
       withRuby = false;
       withPython3 = false;
+      extraPackages = [ pkgs.gcc ];
     };
 
     fzf.enable = true;
@@ -220,6 +230,24 @@
     };
   };
 
+  home.file.".mozilla/firefox/drm-release/user.js".text = ''
+    user_pref("media.eme.enabled", true);
+    user_pref("media.eme.encrypted-media-encryption-scheme.enabled", true);
+    user_pref("media.gmp-widevinecdm.enabled", true);
+    user_pref("media.gmp-widevinecdm.visible", true);
+    user_pref("media.gmp-widevinecdm.autoupdate", false);
+    user_pref("media.gmp-widevinecdm.version", "system-installed");
+  '';
+
+  home.activation.firefoxDrmWidevine = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    CDM_SRC="${pkgs.widevine-cdm}/share/google/chrome/WidevineCdm"
+    PROFILE_DIR="$HOME/.mozilla/firefox/drm-release"
+    CDM_DEST="$PROFILE_DIR/gmp-widevinecdm/system-installed"
+    $DRY_RUN_CMD mkdir -p "$CDM_DEST"
+    $DRY_RUN_CMD ln -sfn "$CDM_SRC/manifest.json" "$CDM_DEST/manifest.json"
+    $DRY_RUN_CMD ln -sfn "$CDM_SRC/_platform_specific/linux_arm64/libwidevinecdm.so" "$CDM_DEST/libwidevinecdm.so"
+  '';
+
   xdg = {
     desktopEntries.slack-app = {
       name = "Slack";
@@ -227,6 +255,7 @@
       icon = "slack";
       categories = [ "Network" "InstantMessaging" ];
       comment = "Slack (Firefox app mode)";
+      settings.StartupWMClass = "SlackApp";
     };
 
     configFile = {
