@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ pkgs, lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -34,31 +34,38 @@
     experimental-features = [ "nix-command" "flakes" ];
   };
 
-  # Audio & camera
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    pulse.enable = true;
-    wireplumber.enable = true;
+  services = {
+    # Audio & camera
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
+      wireplumber.enable = true;
+    };
+    dbus.enable = true;
+    upower.enable = true;
+    xserver.videoDrivers = [ "displaylink" "modesetting" ];
   };
 
   # Docker
   virtualisation.docker.enable = true;
 
-  # 1Password
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ "ruben" ];
+  programs = {
+    # 1Password
+    _1password.enable = true;
+    _1password-gui = {
+      enable = true;
+      polkitPolicyOwners = [ "ruben" ];
+    };
+
+    # Shell
+    fish.enable = true;
+    nix-ld.enable = true;
   };
   environment.etc."1password/custom_allowed_browsers" = {
     text = "firefox-devedition\n";
     mode = "0755";
   };
-
-  # Shell
-  programs.fish.enable = true;
-  programs.nix-ld.enable = true;
 
   # User
   users.users.ruben = {
@@ -73,10 +80,6 @@
     GNOME_KEYRING_CONTROL  = "/run/user/$UID/keyring";
     SSH_AUTH_SOCK          = "/run/user/$UID/keyring/ssh";
   };
-  services.dbus.enable = true;
-  services.upower.enable = true;
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
-
   time.timeZone = "Europe/Amsterdam";
   hardware.bluetooth.enable = true;
 

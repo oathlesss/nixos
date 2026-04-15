@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,7 +30,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, apple-silicon, niri, noctalia, ... }: {
+  outputs = inputs@{ nixpkgs, home-manager, apple-silicon, niri, ... }: {
     nixosConfigurations.asahi = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       specialArgs = { inherit inputs; };
