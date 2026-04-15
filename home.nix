@@ -71,7 +71,18 @@
 
     firefox = {
       enable = true;
-      package = pkgs.firefox-devedition;
+      package = pkgs.firefox-devedition.overrideAttrs (old: {
+        buildCommand =
+          old.buildCommand
+          + ''
+            mkdir -p "$out/gmp-widevinecdm/system-installed"
+            ln -s "${pkgs.widevine-cdm}/share/google/chrome/WidevineCdm/manifest.json" \
+              "$out/gmp-widevinecdm/system-installed/manifest.json"
+            ln -s "${pkgs.widevine-cdm}/share/google/chrome/WidevineCdm/_platform_specific/linux_arm64/libwidevinecdm.so" \
+              "$out/gmp-widevinecdm/system-installed/libwidevinecdm.so"
+            wrapProgram "$oldExe" --set MOZ_GMP_PATH "$out/gmp-widevinecdm/system-installed"
+          '';
+      });
     };
 
     alacritty = {
