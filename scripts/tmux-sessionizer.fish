@@ -3,7 +3,7 @@
 if test (count $argv) -eq 1
     set selected $argv[1]
 else
-    set selected (begin; find ~/repos ~/work -mindepth 1 -maxdepth 1 -type d; echo $HOME/nixos; end | fzf)
+    set selected (begin; fd --min-depth 1 --max-depth 1 --type d . ~/repos ~/work; echo $HOME/nixos; end | fzf)
 end
 
 if test -z "$selected"

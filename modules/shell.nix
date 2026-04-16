@@ -29,7 +29,6 @@
       shellInit = ''
         alias kubectl="kubecolor"
         alias cat="bat"
-        alias find="fd"
         alias ls="eza --icons"
         alias ll="eza -l --icons --git"
         alias la="eza -la --icons --git"
@@ -97,12 +96,6 @@
       destination = "/bin/slack";
       executable = true;
       text = builtins.readFile ../scripts/slack.fish;
-    })
-    (pkgs.writeTextFile {
-      name = "move-slack-to-workspace";
-      destination = "/bin/move-slack-to-workspace";
-      executable = true;
-      text = builtins.readFile ../scripts/move-slack-to-workspace.sh;
     })
   ];
 }
