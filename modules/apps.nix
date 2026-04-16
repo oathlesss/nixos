@@ -20,6 +20,10 @@
     inputs.noctalia.packages.aarch64-linux.default
 
     # Media
+    gimp
+    kdePackages.kdenlive
+    libreoffice
+    loupe
     playerctl
     viu
 
@@ -41,8 +45,10 @@
     zellij
 
     # Version control
+    gitleaks
     jujutsu
     lazygit
+    onefetch
 
     # TUI dashboards
     lazydocker
@@ -120,6 +126,10 @@
     statix
 
     # Database
+    beekeeper-studio
+    d2
+    duckdb
+    pgcli
     postgresql
     postgresql.dev
     (pkgs.writeShellScriptBin "pg_config" ''
@@ -145,7 +155,12 @@
 
     # Containers / DevOps
     dive      # explore Docker image layers
+    podman
+    podman-compose
     trivy     # vulnerability scanner for containers
+
+    # Documents
+    zathura
 
     # Media processing
     audacity  # audio editing
@@ -161,6 +176,7 @@
 
     # System utilities
     fastfetch
+    screenkey
     godot
     libsecret
   ];
