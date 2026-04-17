@@ -70,6 +70,7 @@
       extraConfig = ''
         set -g window-style 'bg=default'
         set -g window-active-style 'bg=default'
+        set -ag terminal-overrides ",alacritty:RGB"
       '';
       plugins = with pkgs.tmuxPlugins; [
         sensible
