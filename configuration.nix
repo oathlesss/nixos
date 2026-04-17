@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -9,6 +9,14 @@
   # Boot
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
+
+  # Virtual camera: transcode FaceTime NV12 → MJPEG for Chromium compatibility
+  boot.kernelModules = [ "v4l2loopback" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+  boot.extraModprobeConfig = ''
+    options v4l2loopback devices=1 video_nr=10 card_label="VirtualCam" exclusive_caps=1
+  '';
+
 
   # Network
   networking.hostName = "nixos";

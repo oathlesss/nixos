@@ -317,10 +317,6 @@ window-rule {
     open-floating true
 }
 
-window-rule {
-    match app-id=r#"^SlackApp$"#
-    open-maximized true
-}
 
 window-rule {
     geometry-corner-radius 12
@@ -345,9 +341,8 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     Mod+D hotkey-overlay-title="Run an Application: noctalia-launcher" { spawn-sh "noctalia-shell ipc call launcher toggle"; }
-    Mod+B hotkey-overlay-title="Run Browser: firefox-dev" { spawn "firefox-devedition"; }
+    Mod+B hotkey-overlay-title="Run Browser: chromium" { spawn "chromium"; }
     Mod+E hotkey-overlay-title="Open File Manager: nautilus" { spawn "nautilus"; }
-    Mod+Shift+M hotkey-overlay-title="Open Messaging: Slack" { spawn "slack"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.

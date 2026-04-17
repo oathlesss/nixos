@@ -70,6 +70,16 @@
 
     fzf.enable = true;
 
+    chromium = {
+      enable = true;
+      commandLineArgs = [
+        "--ozone-platform=wayland"
+        "--disable-features=VaapiVideoEncoder,VaapiVideoDecoder"
+        "--disable-accelerated-video-decode"
+        "--disable-accelerated-video-encode"
+      ];
+    };
+
     firefox = {
       enable = true;
       package = pkgs.firefox-devedition.overrideAttrs (old: {
@@ -242,16 +252,21 @@
     };
   };
 
-  xdg = {
-    desktopEntries.slack-app = {
-      name = "Slack";
-      exec = "slack";
-      icon = "slack";
-      categories = [ "Network" "InstantMessaging" ];
-      comment = "Slack (Firefox app mode)";
-      settings.StartupWMClass = "SlackApp";
+  # Transcode FaceTime HD NV12 → MJPEG so Chromium's WebRTC handles it correctly on ARM64
+  systemd.user.services.virtual-camera = {
+    Unit = {
+      Description = "FaceTime HD NV12→MJPEG virtual camera for Chromium WebRTC";
+      After = [ "basic.target" ];
     };
+    Service = {
+      ExecStart = "${pkgs.ffmpeg}/bin/ffmpeg -f v4l2 -input_format nv12 -video_size 1280x720 -framerate 30 -i /dev/video0 -f v4l2 -vcodec mjpeg -q:v 5 /dev/video10";
+      Restart = "on-failure";
+      RestartSec = "3";
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
 
+  xdg = {
     configFile = {
       "git/template".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/git/template";
@@ -267,4 +282,5 @@
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/config/alacritty/themes/noctalia.toml";
     };
   };
+
 }
