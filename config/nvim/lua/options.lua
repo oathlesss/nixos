@@ -17,3 +17,4 @@ o.ignorecase = true
 o.smartcase = true
 o.completeopt = "menuone,noselect,preview"
 o.clipboard = "unnamedplus"
+o.winbar = "%=%m %f"
