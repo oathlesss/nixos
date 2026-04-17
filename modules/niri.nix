@@ -9,20 +9,24 @@
     enable = true;
     settings = {
       default_session = {
-        command = ''
-          ${pkgs.bash}/bin/bash -c '
-            sleep 2
-            ${pkgs.ncurses}/bin/clear
-            exec ${pkgs.tuigreet}/bin/tuigreet \
-              --time \
-              --remember \
-              --remember-user-session \
-              --asterisks \
-              --greeting "Welcome, Ruben" \
-              --cmd "dbus-run-session niri-session" \
-              --theme "border=#cba6f7;text=#cdd6f4;prompt=#89b4fa;time=#a6adc8;action=#6c7086;button=#cba6f7;container=#181825;title=#b4befe;greet=#cdd6f4;input=#cdd6f4"
-          '
-        '';
+        command =
+          let
+            theme = "border=#cba6f7;text=#cdd6f4;prompt=#89b4fa;time=#a6adc8;action=#6c7086;button=#cba6f7;container=#181825;title=#b4befe;greet=#cdd6f4;input=#cdd6f4";
+          in
+          ''
+            ${pkgs.bash}/bin/bash -c "
+              sleep 2
+              ${pkgs.ncurses}/bin/clear
+              exec ${pkgs.tuigreet}/bin/tuigreet \
+                --time \
+                --remember \
+                --remember-user-session \
+                --asterisks \
+                --greeting 'Welcome, Ruben' \
+                --cmd 'dbus-run-session niri-session' \
+                --theme '${theme}'
+            "
+          '';
         user = "greeter";
       };
     };

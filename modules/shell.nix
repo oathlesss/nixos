@@ -80,6 +80,21 @@
             set -g @continuum-restore 'on'
           '';
         }
+        {
+          plugin = catppuccin;
+          extraConfig = ''
+            set -g @catppuccin_flavor "mocha"
+            set -g @catppuccin_window_status_style "basic"
+            set -g @catppuccin_window_text "#{pane_current_command}"
+            set -g @catppuccin_window_current_text "#{pane_current_command}"
+            set -g @catppuccin_status_left_separator ""
+            set -g @catppuccin_status_right_separator ""
+            set -g status-left "#{E:@catppuccin_status_session}"
+            set -g status-right "#{E:@catppuccin_status_directory}"
+            set -g status-left-length 100
+            set -g status-right-length 100
+          '';
+        }
       ];
     };
   };
@@ -90,12 +105,6 @@
       destination = "/bin/tmux-sessionizer";
       executable = true;
       text = builtins.readFile ../scripts/tmux-sessionizer.fish;
-    })
-    (pkgs.writeTextFile {
-      name = "slack";
-      destination = "/bin/slack";
-      executable = true;
-      text = builtins.readFile ../scripts/slack.fish;
     })
   ];
 }

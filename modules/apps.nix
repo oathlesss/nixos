@@ -26,7 +26,6 @@
     loupe
     playerctl
     viu
-    spotify
 
     # Notes / productivity
     obsidian
