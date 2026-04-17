@@ -85,15 +85,17 @@
           plugin = catppuccin;
           extraConfig = ''
             set -g @catppuccin_flavor "mocha"
-            set -g @catppuccin_window_status_style "basic"
-            set -g @catppuccin_window_text "#{pane_current_command}"
-            set -g @catppuccin_window_current_text "#{pane_current_command}"
+            set -g @catppuccin_window_status_style "rounded"
+            set -g @catppuccin_window_text " #{pane_current_command} "
+            set -g @catppuccin_window_current_text " #{pane_current_command} "
             set -g @catppuccin_status_left_separator ""
             set -g @catppuccin_status_right_separator ""
+            set -g @catppuccin_directory_icon ""
             set -g status-left "#{E:@catppuccin_status_session}"
             set -g status-right "#{E:@catppuccin_status_directory}"
             set -g status-left-length 100
             set -g status-right-length 100
+            set -g status-justify "absolute-centre"
           '';
         }
       ];
