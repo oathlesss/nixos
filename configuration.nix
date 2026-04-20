@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -11,7 +11,7 @@
   boot.loader.efi.canTouchEfiVariables = false;
 
   # Virtual camera: transcode FaceTime NV12 → MJPEG for Chromium compatibility
-  boot.kernelModules = [ "v4l2loopback" ];
+  boot.kernelModules = [ "v4l2loopback" "wireguard" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.extraModprobeConfig = ''
     options v4l2loopback devices=1 video_nr=10 card_label="VirtualCam" exclusive_caps=1
@@ -21,6 +21,8 @@
   # Network
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+
+  environment.systemPackages = with pkgs; [ wireguard-tools ];
 
   # Binary caches
   nix.gc = {
@@ -38,7 +40,9 @@
     ];
     trusted-public-keys = [
       "niri.cachix.org-1:Wv00m07PsuocRKzfDoJ3mulS17Z6oezYhGhR+3W2964="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
     ];
+    max-jobs = "auto";
     experimental-features = [ "nix-command" "flakes" ];
   };
 
@@ -94,6 +98,8 @@
     xserver.videoDrivers = [ "displaylink" "modesetting" ];
   };
 
+  zramSwap.enable = true;
+
   # Docker
   virtualisation.docker.enable = true;
 
@@ -123,10 +129,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.sessionVariables = {
-    GNOME_KEYRING_CONTROL  = "/run/user/$UID/keyring";
-    SSH_AUTH_SOCK          = "/run/user/$UID/keyring/ssh";
-  };
+  services.gnome.gnome-keyring.enable = true;
   time.timeZone = "Europe/Amsterdam";
   hardware.bluetooth = {
     enable = true;
@@ -138,5 +141,5 @@
     };
   };
 
-  system.stateVersion = lib.mkForce "24.11";
+  system.stateVersion = "24.11";
 }

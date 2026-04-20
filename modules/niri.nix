@@ -15,8 +15,6 @@
           in
           ''
             ${pkgs.bash}/bin/bash -c "
-              sleep 2
-              ${pkgs.ncurses}/bin/clear
               exec ${pkgs.tuigreet}/bin/tuigreet \
                 --time \
                 --remember \
@@ -42,10 +40,10 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
-      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gnome
       xdg-desktop-portal-gtk
     ];
-    config.niri.default = [ "wlr" "gtk" ];
+    config.niri.default = [ "gnome" "gtk" ];
     config.common.default = [ "gtk" ];
   };
 }

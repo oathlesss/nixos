@@ -37,6 +37,18 @@
       else [])
       ++ [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
+        pkgs.libnotify
+        (pkgs.writeShellScriptBin "vpn-toggle" ''
+          CONNECTION="office"
+
+          if nmcli con show --active | grep -q "$CONNECTION"; then
+            nmcli con down "$CONNECTION"
+            notify-send "VPN" "Office VPN disconnected"
+          else
+            nmcli con up "$CONNECTION"
+            notify-send "VPN" "Office VPN connected"
+          fi
+        '')
       ];
     sessionVariables = {
       XDG_CURRENT_DESKTOP = "niri";
@@ -96,6 +108,43 @@
       });
     };
 
+    ghostty = {
+      enable = true;
+      settings = {
+        font-family = "BerkeleyMono Nerd Font";
+        font-size = 13;
+        window-decoration = false;
+        window-padding-x = 10;
+        window-padding-y = 10;
+        background-opacity = 0.92;
+        # Catppuccin Mocha
+        background = "1e1e2e";
+        foreground = "cdd6f4";
+        cursor-color = "f5e0dc";
+        cursor-text = "1e1e2e";
+        selection-background = "585b70";
+        selection-foreground = "cdd6f4";
+        palette = [
+          "0=#45475a"
+          "1=#f38ba8"
+          "2=#a6e3a1"
+          "3=#f9e2af"
+          "4=#89b4fa"
+          "5=#f5c2e7"
+          "6=#94e2d5"
+          "7=#a6adc8"
+          "8=#585b70"
+          "9=#f37799"
+          "10=#89d88b"
+          "11=#ebd391"
+          "12=#74a8fc"
+          "13=#f2aede"
+          "14=#6bd7ca"
+          "15=#bac2de"
+        ];
+      };
+    };
+
     alacritty = {
       enable = true;
       settings = {
@@ -103,6 +152,7 @@
         window = {
           padding = { x = 10; y = 10; };
           decorations = "None";
+          opacity = 0.92;
         };
         font = {
           size = 13;
@@ -110,38 +160,6 @@
           bold = { family = "BerkeleyMono Nerd Font"; style = "Bold"; };
           italic = { family = "BerkeleyMono Nerd Font"; style = "Oblique"; };
           bold_italic = { family = "BerkeleyMono Nerd Font"; style = "Bold Oblique"; };
-        };
-      };
-    };
-
-    foot = {
-      enable = true;
-      settings = {
-        main = {
-          font = "BerkeleyMono Nerd Font:size=13";
-        };
-        colors = {
-          background = "1e1e2e";
-          foreground = "cdd6f4";
-          regular0 = "45475a";
-          regular1 = "f38ba8";
-          regular2 = "a6e3a1";
-          regular3 = "f9e2af";
-          regular4 = "89b4fa";
-          regular5 = "f5c2e7";
-          regular6 = "94e2d5";
-          regular7 = "a6adc8";
-          bright0 = "585b70";
-          bright1 = "f37799";
-          bright2 = "89d88b";
-          bright3 = "ebd391";
-          bright4 = "74a8fc";
-          bright5 = "f2aede";
-          bright6 = "6bd7ca";
-          bright7 = "bac2de";
-        };
-        cursor = {
-          color = "1e1e2e f5e0dc";
         };
       };
     };
@@ -159,7 +177,7 @@
         format = "ssh";
         signByDefault = true;
       };
-      ignores = [ "**/.claude/settings.local.json" ];
+      ignores = [ "**/.claude/settings.local.json" ".direnv/" ];
       includes = [{ condition = "gitdir:~/work/"; path = "~/.config/git/work"; }];
       settings = {
         user = {
@@ -257,6 +275,7 @@
     Unit = {
       Description = "FaceTime HD NV12→MJPEG virtual camera for Chromium WebRTC";
       After = [ "basic.target" ];
+      ConditionPathExists = "/dev/video0";
     };
     Service = {
       ExecStart = "${pkgs.ffmpeg}/bin/ffmpeg -f v4l2 -input_format nv12 -video_size 1280x720 -framerate 30 -i /dev/video0 -f v4l2 -vcodec mjpeg -q:v 5 /dev/video10";

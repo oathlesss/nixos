@@ -9,6 +9,7 @@ local parsers = {
   "markdown",
   "html",
   "css",
+  "nix",
 }
 
 vim.cmd.packadd("nvim-treesitter")

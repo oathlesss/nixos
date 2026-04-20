@@ -1,4 +1,10 @@
 return {
+  nixd = {
+    cmd          = { "nixd" },
+    filetypes    = { "nix" },
+    root_markers = { "flake.nix", ".git" },
+  },
+
   lua_ls = {
     cmd      = { "lua-language-server" },
     filetypes = { "lua" },

@@ -1,2 +1,4 @@
 [user]
   email = ruben@fourdigits.nl
+[core]
+  excludesFile = ~/nixos/config/git/ignore-work

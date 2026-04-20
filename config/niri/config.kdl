@@ -318,9 +318,20 @@ window-rule {
 }
 
 
+
 window-rule {
     geometry-corner-radius 12
     clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"^com\.mitchellh\.ghostty$"#
+    draw-border-with-background false
+}
+
+window-rule {
+    match app-id="Alacritty"
+    draw-border-with-background false
 }
 
 binds {
@@ -339,10 +350,11 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
+    Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="Run an Application: noctalia-launcher" { spawn-sh "noctalia-shell ipc call launcher toggle"; }
     Mod+B hotkey-overlay-title="Run Browser: chromium" { spawn "chromium"; }
     Mod+E hotkey-overlay-title="Open File Manager: nautilus" { spawn "nautilus"; }
+    Mod+Shift+W hotkey-overlay-title="Toggle Office VPN" { spawn "vpn-toggle"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.

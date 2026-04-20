@@ -11,10 +11,17 @@
           exec tmux new-session -A -s main
         end
 
+        alias kubectl="kubecolor"
+        alias cat="bat"
+        alias ls="eza --icons"
+        alias ll="eza -l --icons --git"
+        alias la="eza -la --icons --git"
+        alias lt="eza --tree --icons"
+        alias cd="z"
+
         bind \cf 'tmux neww tmux-sessionizer'
         fastfetch
 
-        fnm env --use-on-cd --shell fish | source
         set -gx NH_FLAKE /home/ruben/nixos
       '';
       shellAbbrs = {
@@ -22,18 +29,10 @@
         lzd     = "lazydocker";
         rebuild = "nh os switch --hostname asahi -- --impure";
         hrebuild = "home-manager switch -b backup --impure --flake /home/ruben/nixos#ruben";
-        k       = "kubectl";
+        k       = "kubecolor";
         kctx    = "kubectx";
         kns     = "kubens";
       };
-      shellInit = ''
-        alias kubectl="kubecolor"
-        alias cat="bat"
-        alias ls="eza --icons"
-        alias ll="eza -l --icons --git"
-        alias la="eza -la --icons --git"
-        alias lt="eza --tree --icons"
-      '';
       plugins = with pkgs.fishPlugins; [
         { name = "fzf-fish"; inherit (fzf-fish) src; }
         { name = "autopair"; inherit (autopair) src; }
@@ -70,7 +69,8 @@
       extraConfig = ''
         set -g window-style 'bg=default'
         set -g window-active-style 'bg=default'
-        set -ag terminal-overrides ",alacritty:RGB"
+        set -ag terminal-overrides ",alacritty*:RGB"
+        set -ag terminal-overrides ",xterm-ghostty:RGB"
       '';
       plugins = with pkgs.tmuxPlugins; [
         sensible
@@ -108,6 +108,12 @@
       destination = "/bin/tmux-sessionizer";
       executable = true;
       text = builtins.readFile ../scripts/tmux-sessionizer.fish;
+    })
+    (pkgs.writeTextFile {
+      name = "work-flake-bootstrap";
+      destination = "/bin/work-flake-bootstrap";
+      executable = true;
+      text = builtins.readFile ../scripts/work-flake-bootstrap.sh;
     })
   ];
 }

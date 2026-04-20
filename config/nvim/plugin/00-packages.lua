@@ -13,6 +13,8 @@ vim.api.nvim_create_autocmd("PackChanged", {
 local specs = {
   -- Treesitter
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+  "https://github.com/nvim-treesitter/nvim-treesitter-context",
+  "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 
   -- Completion
   { src = "https://github.com/Saghen/blink.cmp", version = "v1" },
