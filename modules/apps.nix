@@ -6,6 +6,7 @@
     }))
 
     # Desktop / Wayland
+    evolution
     grim
     nautilus
     obs-studio
@@ -14,7 +15,7 @@
     widevine-cdm
     wl-clipboard
     xwayland-satellite
-    inputs.noctalia.packages.aarch64-linux.default
+    (inputs.noctalia.packages.aarch64-linux.default.override { calendarSupport = true; })
 
     # Media
     gimp
