@@ -156,5 +156,7 @@
     fastfetch
     libsecret
     screenkey
+
+    zeal
   ];
 }

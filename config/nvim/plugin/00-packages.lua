@@ -23,6 +23,10 @@ local specs = {
   "https://github.com/nvim-lua/plenary.nvim",
   "https://github.com/folke/which-key.nvim",
 
+  -- Notes
+  "https://github.com/epwalsh/obsidian.nvim",
+  "https://github.com/Saghen/blink.compat",
+
   -- Picker
   "https://github.com/ibhagwan/fzf-lua",
 

@@ -30,3 +30,9 @@ map("n", "[c", function()
   if vim.wo.diff then vim.cmd.normal({ "[c", bang = true })
   else require("gitsigns").nav_hunk("prev") end
 end, { desc = "Prev hunk" })
+
+-- Obsidian
+map("n", "<leader>of", "<cmd>ObsidianSearch<cr>",     { desc = "Find note" })
+map("n", "<leader>on", "<cmd>ObsidianNew<cr>",        { desc = "New note" })
+map("n", "<leader>ob", "<cmd>ObsidianBacklinks<cr>",  { desc = "Backlinks" })
+map("n", "<leader>od", "<cmd>ObsidianFollowLink<cr>", { desc = "Follow link" })

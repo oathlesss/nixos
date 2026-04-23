@@ -282,7 +282,6 @@
       Restart = "on-failure";
       RestartSec = "3";
     };
-    Install.WantedBy = [ "default.target" ];
   };
 
   xdg = {
