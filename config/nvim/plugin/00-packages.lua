@@ -51,6 +51,24 @@ local specs = {
   -- TODO Comments
   "https://github.com/folke/todo-comments.nvim",
 
+  -- Diagnostics
+  "https://github.com/folke/trouble.nvim",
+
+  -- Git
+  "https://github.com/sindrets/diffview.nvim",
+
+  -- Markdown
+  "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+
+  -- Lua dev
+  { src = "https://github.com/folke/lazydev.nvim", version = "stable" },
+
+  -- Editing
+  "https://github.com/tpope/vim-sleuth",
+
+  -- AI
+  "https://github.com/zbirenbaum/copilot.lua",
+
   -- Colorschemes
   "https://github.com/catppuccin/nvim",
 }

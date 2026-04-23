@@ -6,17 +6,12 @@ return {
   },
 
   lua_ls = {
-    cmd      = { "lua-language-server" },
+    cmd       = { "lua-language-server" },
     filetypes = { "lua" },
-    settings = {
+    settings  = {
       Lua = {
         runtime   = { version = "LuaJIT" },
-        workspace = {
-          checkThirdParty = false,
-          library = vim.api.nvim_get_runtime_file("", true),
-        },
-        diagnostics = { globals = { "vim" } },
-        telemetry   = { enable = false },
+        telemetry = { enable = false },
       },
     },
   },

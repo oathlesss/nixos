@@ -31,6 +31,19 @@ map("n", "[c", function()
   else require("gitsigns").nav_hunk("prev") end
 end, { desc = "Prev hunk" })
 
+-- Diffview
+map("n", "<leader>gv", "<cmd>DiffviewOpen<cr>",          { desc = "Diffview open" })
+map("n", "<leader>gH", "<cmd>DiffviewFileHistory %<cr>", { desc = "File history" })
+map("n", "<leader>gq", "<cmd>DiffviewClose<cr>",         { desc = "Diffview close" })
+
+-- Trouble
+map("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              { desc = "Diagnostics" })
+map("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer diagnostics" })
+map("n", "<leader>xt", "<cmd>Trouble todo toggle<cr>",                     { desc = "TODOs" })
+map("n", "<leader>xq", "<cmd>Trouble qflist toggle<cr>",                   { desc = "Quickfix" })
+map("n", "]x", function() require("trouble").next({ skip_groups = true, jump = true }) end, { desc = "Next trouble item" })
+map("n", "[x", function() require("trouble").prev({ skip_groups = true, jump = true }) end, { desc = "Prev trouble item" })
+
 -- Obsidian
 map("n", "<leader>of", "<cmd>ObsidianSearch<cr>",     { desc = "Find note" })
 map("n", "<leader>on", "<cmd>ObsidianNew<cr>",        { desc = "New note" })
