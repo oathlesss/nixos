@@ -334,6 +334,38 @@ window-rule {
     draw-border-with-background false
 }
 
+// Nautilus file-chooser dialogs should float
+window-rule {
+    match app-id=r#"^org\.gnome\.Nautilus$"# title="^Open$"
+    open-floating true
+}
+
+// OBS Studio: open floating for recording/streaming control
+window-rule {
+    match app-id=r#"^com\.obsproject\.Studio$"#
+    open-floating true
+    default-floating-position x=100 y=100 relative-to="top-left"
+}
+
+// Zeal: offline docs viewer, natural as a floating reference panel
+window-rule {
+    match app-id=r#"^Zeal$"#
+    open-floating true
+    default-floating-position x=50 y=50 relative-to="top-right"
+}
+
+// Chromium picture-in-picture
+window-rule {
+    match app-id=r#"^chromium-browser$"# title="^Picture in picture$"
+    open-floating true
+}
+
+// Screenkey: overlay tool, always float
+window-rule {
+    match app-id=r#"^screenkey$"#
+    open-floating true
+}
+
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
     // in the end. To find an XKB name for a particular key, you may use a program
