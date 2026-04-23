@@ -35,7 +35,10 @@
   # NixOS appends loglevel=${boot.consoleLogLevel} last, overriding any loglevel= in boot.kernelParams.
   # Setting boot.consoleLogLevel = 1 wins: only EMERG (0) reaches the console.
   boot.consoleLogLevel = 1;
-  boot.kernelParams = [ "console=tty2" "quiet" ];
+  boot.kernelParams = [
+    "console=tty2"
+    "quiet"
+  ];
 
   xdg.portal = {
     enable = true;
@@ -43,7 +46,10 @@
       xdg-desktop-portal-gnome
       xdg-desktop-portal-gtk
     ];
-    config.niri.default = [ "gnome" "gtk" ];
+    config.niri.default = [
+      "gnome"
+      "gtk"
+    ];
     config.common.default = [ "gtk" ];
   };
 }

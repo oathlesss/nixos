@@ -25,21 +25,39 @@
         set -gx NH_FLAKE /home/ruben/nixos
       '';
       shellAbbrs = {
-        lzg     = "lazygit";
-        lzd     = "lazydocker";
+        lzg = "lazygit";
+        lzd = "lazydocker";
         rebuild = "nh os switch --hostname asahi -- --impure";
         hrebuild = "home-manager switch -b backup --impure --flake /home/ruben/nixos#ruben";
-        k       = "kubecolor";
-        kctx    = "kubectx";
-        kns     = "kubens";
+        k = "kubecolor";
+        kctx = "kubectx";
+        kns = "kubens";
       };
       plugins = with pkgs.fishPlugins; [
-        { name = "fzf-fish"; inherit (fzf-fish) src; }
-        { name = "autopair"; inherit (autopair) src; }
-        { name = "done"; inherit (done) src; }
-        { name = "sponge"; inherit (sponge) src; }
-        { name = "bass"; inherit (bass) src; }
-        { name = "colored-man-pages"; inherit (colored-man-pages) src; }
+        {
+          name = "fzf-fish";
+          inherit (fzf-fish) src;
+        }
+        {
+          name = "autopair";
+          inherit (autopair) src;
+        }
+        {
+          name = "done";
+          inherit (done) src;
+        }
+        {
+          name = "sponge";
+          inherit (sponge) src;
+        }
+        {
+          name = "bass";
+          inherit (bass) src;
+        }
+        {
+          name = "colored-man-pages";
+          inherit (colored-man-pages) src;
+        }
       ];
     };
 
