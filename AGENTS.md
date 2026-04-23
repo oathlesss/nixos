@@ -10,12 +10,13 @@ Keep the existing architecture and place changes in the owning layer.
 
 - System layer (machine-level NixOS):
   - `flake.nix`
-  - `configuration.nix`
+  - `hosts/asahi/configuration.nix`
   - `modules/asahi.nix`
   - `modules/niri.nix`
 - Home layer (user-level Home Manager):
-  - `home.nix`
-  - `modules/apps.nix`
+  - `hosts/asahi/home.nix`
+  - `modules/apps.nix` (imports `modules/home/*.nix`)
+  - `modules/home/dev.nix`, `modules/home/k8s.nix`, `modules/home/media.nix`, `modules/home/nix-tools.nix`, `modules/home/desktop.nix`
   - `modules/shell.nix`
   - `modules/noctalia.nix`
 - User config sources synced by Home Manager symlinks:
@@ -44,6 +45,13 @@ If no reliable primary source is available, state that explicitly and use the mo
 ## Validation And Lint Matrix
 Run targeted checks matching the scope of changes. Avoid unrelated full rebuilds.
 
+### Pre-commit Hooks
+Run `nix develop` once to install git pre-commit hooks. After installation, `git commit` automatically runs deadnix, statix, and nixfmt-rfc-style checks. Install them when setting up a new checkout.
+
+### Nix Formatting (required after Nix edits)
+- `nixfmt-rfc-style <file.nix>` (or `nix run nixpkgs#nixfmt-rfc-style -- <files>` if not installed)
+  - Apply to every `.nix` file touched; formatting is enforced by pre-commit hook.
+
 ### Nix Linting (required after Nix edits)
 - `deadnix .`
   - Treat findings as blocking by default.
@@ -54,12 +62,12 @@ Run targeted checks matching the scope of changes. Avoid unrelated full rebuilds
   - Escalate to required fixes when a finding implies correctness or maintainability risk.
 
 ### System Layer Changes
-When editing system-level NixOS files (for example `configuration.nix`, `modules/niri.nix`, `modules/asahi.nix`, system-related `flake.nix` outputs):
+When editing system-level NixOS files (for example `hosts/asahi/configuration.nix`, `modules/niri.nix`, `modules/asahi.nix`, system-related `flake.nix` outputs):
 - `nix flake check`
 - `nix build .#nixosConfigurations.asahi.config.system.build.toplevel`
 
 ### Home Layer Changes
-When editing Home Manager files (for example `home.nix`, `modules/apps.nix`, `modules/shell.nix`, `modules/noctalia.nix`, home-related `flake.nix` outputs):
+When editing Home Manager files (for example `hosts/asahi/home.nix`, `modules/apps.nix`, `modules/home/*.nix`, `modules/shell.nix`, `modules/noctalia.nix`, home-related `flake.nix` outputs):
 - `nix flake check`
 - `nix build .#homeConfigurations.ruben.activationPackage`
 
