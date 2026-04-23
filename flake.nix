@@ -28,26 +28,55 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  };
 
-  outputs = inputs@{ nixpkgs, home-manager, apple-silicon, niri, ... }: {
-    nixosConfigurations.asahi = nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        apple-silicon.nixosModules.apple-silicon-support
-        niri.nixosModules.niri
-        ./configuration.nix
-      ];
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    homeConfigurations.ruben = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs {
-        system = "aarch64-linux";
-        config.allowUnfree = true;
+  };
+
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      apple-silicon,
+      niri,
+      ...
+    }:
+    let
+      pkgs = import nixpkgs { system = "aarch64-linux"; };
+      pre-commit-check = inputs.git-hooks.lib.aarch64-linux.run {
+        src = ./.;
+        hooks = {
+          deadnix.enable = true;
+          statix.enable = true;
+          nixfmt-rfc-style.enable = true;
+        };
       };
-      extraSpecialArgs = { inherit inputs; };
-      modules = [ ./home.nix ];
+    in
+    {
+      nixosConfigurations.asahi = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          apple-silicon.nixosModules.apple-silicon-support
+          niri.nixosModules.niri
+          ./hosts/asahi/configuration.nix
+        ];
+      };
+
+      homeConfigurations.ruben = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs {
+          system = "aarch64-linux";
+          config.allowUnfree = true;
+        };
+        extraSpecialArgs = { inherit inputs; };
+        modules = [ ./hosts/asahi/home.nix ];
+      };
+
+      devShells.aarch64-linux.default = pkgs.mkShell {
+        inherit (pre-commit-check) shellHook;
+      };
     };
-  };
 }
