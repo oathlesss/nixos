@@ -1,19 +1,79 @@
-# nixos
+<div align="center">
 
-NixOS configuration for an Apple Silicon MacBook running [Asahi Linux](https://asahilinux.org/), managed with Nix Flakes and Home Manager.
+![banner](Images/banner.svg)
+
+![Last Commit](https://img.shields.io/github/last-commit/oathlesss/nixos?color=a6e3a1&style=flat-square)
+![Repo Size](https://img.shields.io/github/repo-size/oathlesss/nixos?color=cba6f7&style=flat-square)
+![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?logo=nixos&logoColor=white&style=flat-square)
+![Flakes](https://img.shields.io/badge/Flakes-enabled-5277C3?logo=nixos&logoColor=white&style=flat-square)
+
+![screenshot](Images/NixOS%20Setup.png)
+
+</div>
+
+NixOS configuration for an Apple Silicon MacBook running [Asahi Linux](https://asahilinux.org/), managed with [Nix Flakes](https://nixos.wiki/wiki/Flakes) and [Home Manager](https://github.com/nix-community/home-manager).
 
 ## System
 
-- **Host**: `asahi` — MacBook, `aarch64-linux`
-- **Nixpkgs**: unstable channel
-- **Desktop**: [Niri](https://github.com/YaLTeR/niri) (Wayland tiling compositor)
-- **Shell/bar**: [Noctalia](https://github.com/noctalia-dev/noctalia-shell)
-- **Terminals**: Ghostty (primary), Alacritty (secondary)
-- **Editor**: Neovim with full LSP + Zed
-- **Font**: Berkeley Mono Nerd Font
-- **Theme**: Catppuccin Mocha throughout
+| Component | |
+|---|---|
+| **Host** | `asahi` — MacBook Pro 14", M2 Pro, aarch64-linux |
+| **Nixpkgs** | unstable channel |
+| **Desktop** | [Niri](https://github.com/YaLTeR/niri) Wayland tiling compositor |
+| **Shell / Bar** | Fish + [Noctalia](https://github.com/noctalia-dev/noctalia-shell) |
+| **Terminals** | Alacritty (primary), Ghostty (secondary) |
+| **Editor** | Neovim (full LSP) + Zed |
+| **Font** | Berkeley Mono Nerd Font |
+| **Theme** | Catppuccin Mocha throughout |
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    F(flake.nix)
+
+    F --> SYS(nixosConfigurations)
+    F --> HM(homeConfigurations)
+
+    SYS --> CFG(hosts/asahi/configuration.nix)
+    CFG --> M1(modules/asahi.nix\nApple Silicon overlay)
+    CFG --> M2(modules/niri.nix\nWM + login)
+
+    HM --> HOME(hosts/asahi/home.nix)
+    HOME --> H1(modules/shell.nix\nFish · tmux · starship)
+    HOME --> H2(modules/swaylock.nix\nLock screen)
+    HOME --> H3(modules/noctalia.nix\nShell bar)
+    HOME --> H4(modules/home/desktop.nix\nGUI apps)
+    HOME --> H5(modules/home/dev.nix\nLanguages · LSP · editors)
+    HOME --> H6(modules/home/k8s.nix\nKubernetes tooling)
+    HOME --> H7(modules/home/media.nix\nAudio · media)
+    HOME --> H8(modules/home/nix-tools.nix\nNix utilities)
+
+    style F fill:#89b4fa,color:#1e1e2e,stroke:none
+    style SYS fill:#cba6f7,color:#1e1e2e,stroke:none
+    style HM fill:#cba6f7,color:#1e1e2e,stroke:none
+    style CFG fill:#313244,color:#cdd6f4,stroke:#45475a
+    style HOME fill:#313244,color:#cdd6f4,stroke:#45475a
+    style M1 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style M2 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H1 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H2 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H3 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H4 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H5 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H6 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H7 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+    style H8 fill:#1e1e2e,color:#a6e3a1,stroke:#45475a
+```
+
+---
 
 ## Repository Structure
+
+<details>
+<summary>Expand file tree</summary>
 
 ```
 ├── flake.nix                  # Inputs and system/home outputs
@@ -48,35 +108,52 @@ NixOS configuration for an Apple Silicon MacBook running [Asahi Linux](https://a
 
 Config files under `config/` are managed as out-of-store symlinks via `xdg.configFile` in `home.nix`.
 
-## Rebuilding
+</details>
 
+---
+
+## Usage
+
+<details>
+<summary>Rebuild and validation commands</summary>
+
+**System rebuild**
 ```bash
-# System rebuild
 nh os switch --hostname asahi -- --impure
-# (Fish abbreviation: rebuild)
-
-# Home Manager rebuild
-home-manager switch -b backup --impure --flake /home/ruben/nixos#ruben
-# (Fish abbreviation: hrebuild)
+# Fish abbreviation: rebuild
 ```
 
-## Validation
-
+**Home Manager rebuild**
 ```bash
-# After any Nix edits
+home-manager switch -b backup --impure --flake /home/ruben/nixos#ruben
+# Fish abbreviation: hrebuild
+```
+
+**Lint**
+```bash
 deadnix .
 statix check .
+```
 
-# System layer changes
+**Build checks**
+```bash
+# System
 nix flake check
 nix build .#nixosConfigurations.asahi.config.system.build.toplevel
 
-# Home layer changes
+# Home
 nix flake check
 nix build .#homeConfigurations.ruben.activationPackage
 ```
 
+</details>
+
+---
+
 ## Notable Features
+
+<details>
+<summary>Expand</summary>
 
 **Hardware & peripherals**
 - Apple Silicon support via [nixos-apple-silicon](https://github.com/tpwrules/nixos-apple-silicon)
@@ -100,3 +177,5 @@ nix build .#homeConfigurations.ruben.activationPackage
 - 1Password: SSH agent, git commit signing, CLI
 - Git SSH signing with conditional work config (email override for `~/work/`)
 - Git pager: delta
+
+</details>
