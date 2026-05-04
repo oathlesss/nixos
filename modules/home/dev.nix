@@ -42,7 +42,7 @@
     onefetch
 
     # Editors / IDEs
-    zed
+    zed-editor
     yazi
 
     # AI / code assistants
