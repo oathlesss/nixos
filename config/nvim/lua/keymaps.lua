@@ -46,6 +46,6 @@ map("n", "[x", function() require("trouble").prev({ skip_groups = true, jump = t
 
 -- Obsidian
 map("n", "<leader>of", "<cmd>ObsidianSearch<cr>",     { desc = "Find note" })
-map("n", "<leader>on", "<cmd>ObsidianNew<cr>",        { desc = "New note" })
+map("n", "<leader>on", "<cmd>ObsidianNewFromTemplate note<cr>", { desc = "New note" })
 map("n", "<leader>ob", "<cmd>ObsidianBacklinks<cr>",  { desc = "Backlinks" })
 map("n", "<leader>od", "<cmd>ObsidianFollowLink<cr>", { desc = "Follow link" })
