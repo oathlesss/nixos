@@ -322,6 +322,8 @@
       ExecStart = "${pkgs.ffmpeg}/bin/ffmpeg -f v4l2 -input_format nv12 -video_size 1280x720 -framerate 30 -i /dev/video0 -f v4l2 -vcodec mjpeg -q:v 5 /dev/video10";
       Restart = "on-failure";
       RestartSec = "3";
+      KillSignal = "SIGINT";
+      TimeoutStopSec = "5";
     };
   };
 
