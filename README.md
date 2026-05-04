@@ -17,16 +17,23 @@ NixOS configuration for an Apple Silicon MacBook running [Asahi Linux](https://a
 
 ```
 ├── flake.nix                  # Inputs and system/home outputs
-├── configuration.nix          # System-level NixOS config
-├── home.nix                   # Home Manager entry point
-├── hardware-configuration.nix # Apple Silicon hardware
+├── hosts/
+│   └── asahi/
+│       ├── configuration.nix  # System-level NixOS config
+│       ├── hardware-configuration.nix # Apple Silicon hardware
+│       └── home.nix           # Home Manager entry point
 ├── modules/
 │   ├── asahi.nix              # Apple Silicon overlay (system)
 │   ├── niri.nix               # Niri WM, greetd/tuigreet login (system)
-│   ├── apps.nix               # All user packages (home)
 │   ├── shell.nix              # Fish, tmux, direnv, zoxide, starship (home)
 │   ├── swaylock.nix           # Lock screen with blur/vignette (home)
-│   └── noctalia.nix           # Noctalia config symlinks (home)
+│   ├── noctalia.nix           # Noctalia config symlinks (home)
+│   └── home/
+│       ├── desktop.nix        # Desktop apps and GUI tools (home)
+│       ├── dev.nix            # Developer tools and languages (home)
+│       ├── k8s.nix            # Kubernetes tooling (home)
+│       ├── media.nix          # Media and audio packages (home)
+│       └── nix-tools.nix      # Nix utilities and helpers (home)
 ├── config/
 │   ├── niri/                  # Niri window manager config (KDL)
 │   ├── nvim/                  # Neovim config (Lua)
