@@ -68,6 +68,8 @@ local specs = {
 
   -- AI
   "https://github.com/zbirenbaum/copilot.lua",
+  "https://github.com/folke/sidekick.nvim",
+  "https://github.com/folke/snacks.nvim",
 
   -- Colorschemes
   "https://github.com/catppuccin/nvim",

@@ -1,4 +1,19 @@
 return {
+  copilot = {
+    cmd          = { "copilot-language-server", "--stdio" },
+    filetypes    = { "*" },
+    root_markers = { ".git" },
+    init_options = {
+      editorInfo       = { name = "Neovim", version = "0.11" },
+      editorPluginInfo = { name = "sidekick.nvim", version = "0.1" },
+    },
+    settings = {
+      copilot = {
+        inlineSuggestion = { enable = false }, -- copilot.lua handles inline; sidekick handles NES
+      },
+    },
+  },
+
   nixd = {
     cmd          = { "nixd" },
     filetypes    = { "nix" },

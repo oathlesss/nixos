@@ -95,7 +95,7 @@
       vimAlias = true;
       withRuby = false;
       withPython3 = false;
-      extraPackages = [ pkgs.gcc ];
+      extraPackages = [ pkgs.gcc pkgs.copilot-language-server ];
     };
 
     fzf.enable = true;
